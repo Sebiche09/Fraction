@@ -13,10 +13,8 @@ class Fraction:
         """This builds a fraction based on some numerator and denominator.
 
         PRE : - num: an int
-              - den: a non-null int
-        POST : set the following attributes :
-               - num : the reduced numerator of the fraction
-               - den : the reduced denominator of the fraction
+        POST : creates a new fraction corresponding to the numerator and denominator values given in parameters.
+        RAISES : - ValueError: The denominator of a fraction can't be null
         """
         if den == 0:
             raise ZeroDivisionError("The denominator of a fraction can't be null.")
@@ -46,7 +44,7 @@ class Fraction:
         """Verify if another value is an integer or a fraction and transform it in a fraction
 
          PRE : - other: an integer or a fraction
-         POST : the fractionated other value
+         POST : return the fractionated <<other>> value
          """
         if isinstance(other, int):
             other = Fraction(other)
@@ -62,7 +60,7 @@ class Fraction:
         """Return a textual representation of the reduced form of the fraction
 
         PRE : -
-        POST : the numerator and the denominator separated by a backslash
+        POST : return a character string representing the fraction in "numerator/denominator" form.
         """
         return f'{self.numerator}/{self.denominator}'
 
@@ -72,7 +70,7 @@ class Fraction:
         A mixed number is the sum of an integer and a proper fraction
 
         PRE : -
-        POST : the fraction as a mixed number; the sum of the integer part and the fraction part
+        POST : return a fraction as a mixed number; the sum of the integer part and the fraction part
         """
         int_part = self.numerator // self.denominator
         fraction_part = Fraction(self.numerator % self.denominator, self.denominator)
@@ -84,7 +82,8 @@ class Fraction:
         """Overloading of the + operator for fractions
 
          PRE : - other: an integer or a fraction
-         POST : a fraction that sums the current fraction and the other fraction
+         POST : return a fraction that sums the current fraction and the other fraction
+         RAISES : - ValueError: other is not an integer or a fraction
          """
         other = self.__set_fraction_param(other)
 
@@ -96,7 +95,8 @@ class Fraction:
         """Overloading of the - operator for fractions
 
         PRE : - other: an integer or a fraction
-        POST : a fraction that subtracts the current fraction and the other fraction
+        POST : return a fraction that subtracts the current fraction and the other fraction
+        RAISES : - ValueError: other is not an integer or a fraction
         """
         other = self.__set_fraction_param(other)
 
@@ -108,7 +108,8 @@ class Fraction:
         """Overloading of the * operator for fractions
 
         PRE : - other: an integer or a fraction
-        POST : a fraction that multiplies the current fraction and the other fraction
+        POST : return a fraction that multiplies the current fraction and the other fraction
+        RAISES : - ValueError: other is not an integer or a fraction
         """
         other = self.__set_fraction_param(other)
 
@@ -120,7 +121,8 @@ class Fraction:
         """Overloading of the / operator for fractions
 
         PRE : - other: an integer or a fraction
-        POST : a fraction that truly divides the current fraction and the other fraction
+        POST : return a fraction that truly divides the current fraction and the other fraction
+        RAISES : - ValueError: other is not an integer or a fraction
         """
         other = self.__set_fraction_param(other)
 
@@ -132,7 +134,7 @@ class Fraction:
         """Overloading of the ** operator for fractions
 
         PRE : - other: an integer
-        POST : - the current fraction powered by another integer
+        POST : - return the current fraction powered by another integer
         """
         if other != 0 and self.is_zero():
             return Fraction()
@@ -152,16 +154,17 @@ class Fraction:
         """Overloading of the == operator for fractions
 
         PRE : - other: a fraction, an integer or a float
-        POST : the equality between the current fraction and the other value
-
+        POST : return True if there is equality between the current fraction and the other value otherwise False
+        RAISES : - ValueError: other is not an integer or a fraction
         """
-        return float(self) == float(other)
+        other = self.__set_fraction_param(other)
+        return self.numerator == other.numerator and self.denominator == other.denominator
 
     def __float__(self) -> float:
         """Returns the decimal value of the fraction
 
         PRE : -
-        POST : the floated value of the fraction
+        POST : return the floated value of the fraction
         """
         return self.numerator / self.denominator
 
@@ -171,7 +174,7 @@ class Fraction:
         """Check if a fraction's value is 0
 
         PRE : -
-        POST : the numerator is null
+        POST : return True if the numerator is null otherwise False
         """
         return not self.numerator
 
@@ -179,7 +182,7 @@ class Fraction:
         """Check if a fraction is integer (ex : 8/4, 3, 2/2, ...)
 
         PRE : -
-        POST : the reduced denominator equals 1
+        POST : return True if the reduced denominator equals 1 otherwise False
         """
         return self.denominator == 1
 
@@ -187,7 +190,7 @@ class Fraction:
         """Check if the absolute value of the fraction is < 1
 
         PRE : -
-        POST : the absolute value of the fraction is < 1
+        POST : return True if the absolute value of the fraction is < 1 otherwise False
         """
         return abs(float(self)) < 1
 
@@ -195,7 +198,7 @@ class Fraction:
         """Check if a fraction's numerator is 1 in its reduced form
 
         PRE : -
-        POST : the reduced numerator equals 1
+        POST : return True if the reduced numerator equals 1 otherwise False
         """
         return self.numerator == 1
 
@@ -205,10 +208,11 @@ class Fraction:
         Two fractions are adjacents if the absolute value of the difference them is a unit fraction
 
         PRE : - other: a fraction
-        POST : ?
+        POST : return True if the fractions are adjacent, False otherwise
         """
-        difference = abs(self - other)
-        return difference.is_unit()
+        numerator_difference = abs(self.numerator * other.denominator - other.numerator * self.denominator)
+        denominator_product = self.denominator * other.denominator
+        return numerator_difference == 1 and denominator_product > 0
 
 if __name__ == '__main__':
     print('--- TEST : FRACTION CLASS ---\n')
