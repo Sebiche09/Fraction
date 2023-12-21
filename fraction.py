@@ -123,6 +123,7 @@ class Fraction:
         PRE : - other: an integer or a fraction
         POST : return a fraction that truly divides the current fraction and the other fraction
         RAISES : - ValueError: other is not an integer or a fraction
+                 - ZeroDivisionError: division by zero in the numerator of 'other'
         """
         other = self.__set_fraction_param(other)
 
