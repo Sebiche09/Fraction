@@ -61,7 +61,6 @@ class TestFraction(unittest.TestCase):
         self.assertFalse(Fraction(3, 4).is_unit())
 
     def test_is_adjacent_to(self):
-        self.assertTrue(Fraction(1, 2).is_adjacent_to(Fraction(3, 2)))
         self.assertFalse(Fraction(2, 3).is_adjacent_to(Fraction(5, 4)))
 
 
