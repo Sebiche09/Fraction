@@ -206,14 +206,14 @@ class Fraction:
     def is_adjacent_to(self, other) -> bool:
         """Check if two fractions differ by a unit fraction
 
-        Two fractions are adjacents if the absolute value of the difference them is a unit fraction
+        Two fractions are adjacents if the absolute value of the difference between them is a unit fraction
 
         PRE : - other: a fraction
         POST : return True if the fractions are adjacent, False otherwise
         """
         numerator_difference = abs(self.numerator * other.denominator - other.numerator * self.denominator)
         denominator_product = self.denominator * other.denominator
-        return numerator_difference == 1 and denominator_product > 0
+        return abs(numerator_difference) == 1 and denominator_product > 0
 
 if __name__ == '__main__':
     print('--- TEST : FRACTION CLASS ---\n')
